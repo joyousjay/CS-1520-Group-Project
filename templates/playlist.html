@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Playlist{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <h2>Here's your recommended playlist:</h2>
+    <table> 
+        <th></th>
+        <th>Track</th>
+        <th>Artist</th>  
+        <th>Link</th>
+        {% for track in playlist %}
+            <tr>
+                <td> <img src={{track.img}} alt="Album art" width="50" height="50"></td>
+                <td>{{ track.track }}</td>
+                <td>{{ track.artists|join(', ') }}</td>
+                <td><a href={{track.link}} target="_blank" rel="noopener noreferrer">{{ track.link }}</a></td>
+            </tr>       
+        {% endfor %}
+    </table>
+
+    <div class="card mt-3" style="background-color: #e3f2fd; width: 350px;">
+        <div class="card-body">
+            <form action="/saveplaylist" method="POST">
+                <input type="text" placeholder="Playlist Name" name="playlist-name" required>
+                <button class="btn btn-primary" type="submit" name="save" value="{{ json_playlist }}">Save Playlist</button> 
+            </form>
+        </div>
+    </div>
+{% endblock %}
