@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="shortcut icon" type="image/jpg" href="{{ url_for('static', filename='logo.png') }}"/>
+  </head>
+
+  <body>
+    <!-- The navbar code-->
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+      <a class="navbar-brand"><img src="../static/logo.png" style="width: 80px;"></a>
+
+      <!-- Below is neccessary for mobile shortening of the navigation bar -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <!---->
+
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('home') }}" style="font-size: 35px; color: black; padding-right: 15px; padding-left: 15px;">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('questionnaire') }}" style="font-size: 35px; color: black; padding-right: 15px; padding-left: 15px;">Questionnaire</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('profile') }}" style="font-size: 35px; color: black; padding-right: 15px; padding-left: 15px;">Profile</a>
+          </li>
+        </ul>
+
+        <span class="navbar-text">
+            {% if auth %}
+                <h6>Hello, {{user}}</h6>
+                <a href="/logout">Sign Out</a>
+            {% endif %}
+        
+            {% if not auth %}
+                <h6><a href="/login">Sign In</a></h6>
+            {% endif %}
+        </span>
+      </div>
+    </nav>
+
+    <section class="content">
+      <header>
+        {% block header %}{% endblock %}
+      </header>
+
+      {% for message in get_flashed_messages() %}
+        <div class="flash">{{ message }}</div>
+      {% endfor %}
+        {% if error %}
+        <span class="error">
+            <h5>{{error}}</h5>
+        </span>
+        {% endif %}
+      {% block content %}{% endblock %}
+    </section>
+  </body>
+</html>
+
