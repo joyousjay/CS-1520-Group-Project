@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Profile{% endblock %}</h1>
+  <br>
+{% endblock %}
+
+{% block content %}
+    <h3>Username: </h3>
+    <p>{{ userInfo.username }}</p>
+    <h3>Email: </h3>
+    <p>{{ userInfo.email }} </p>
+    
+    {% if spotifyStatus == True %}
+        <p style="color: green;">Currently logged in to Spotify</p>
+    {% elif spotifyStatus == False %}
+        <p style="color: darkblue;">Not logged in to Spotify. Log in to send your playlists to your own Spotify account!</p>
+    {% endif %}
+    
+    <a href={{spAuthURL}} class="btn btn-primary">Login to Spotify</a>
+
+    <a href="/logoutspotify" class="btn btn-primary">Logout of Spotify</a>
+    
+    <hr> 
+
+    <h3>Saved Playlists:</h3>
+        <div class="d-flex flex-wrap">
+        {% for playlist in playlists %}
+            <div class="playlist-preview">
+                <h3>{{ playlist["name"] }}</h3>
+                <table>
+                    <tr>
+                    {% for track in playlist["playlist"][:2] %}
+                        <td><img src="{{track['img']}}" width=80></td>
+                    {% endfor %}
+                    </tr>
+                    <tr>
+                    {% for track in playlist["playlist"][2:4] %}
+                        <td><img src="{{track['img']}}" width = 80></td>
+                    {% endfor %}
+                    </tr>
+                </table>
+                {% for track in playlist["playlist"][:3] %}
+                    <p>{{ track["track"] }} - {{ track["artists"]|join(', ') }}</p>
+                {% endfor %}
+
+                <a class="m-1 btn btn-primary" href="/viewplaylist/{{ playlist.key.id }}">View Playlist</a>
+                {% if spotifyStatus == True %}
+                    <a class="m-1 btn btn-primary" href="/addtospotify/{{ playlist.key.id }}">Add to Spotify</a>
+                {% endif %}
+                <a class="m-1 btn btn-primary" href="/deleteplaylist/{{ playlist.key.id }}">Delete from Profile</a>                
+            </div>
+        {% endfor %}
+        </div>
+{% endblock %}
