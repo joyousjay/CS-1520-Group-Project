@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1 style="font-size: 60px; text-align: center;">{% block title %}Playlist Generator{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<div class="center-text">
+    <p>Get Recommended Some Total Bops</p>
+</div>
+
+<ol>
+  <li>Answer our questionnaire about the music you like</li>
+  <li>Get a recommended playlist and save to your account if you like it</li>
+  <li>Connect your Spotify account and send playlists to that account to listen to</li>
+</ol>
+
+<!--Slideshow with help from w3schools.com-->
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<style>
+  img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  button {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+  }
+  .right {
+      position: relative;
+      right: -30px;
+      top:-27.5px;
+  }
+</style>
+
+<div class="container">
+  <img class="musicSlides" src="../static/images/chill-party.jpg" style="width:60%"; >
+  <img class="musicSlides" src="../static/images/source.gif" style="width:60%";>
+  <img class="musicSlides" src="../static/images/dance.gif" style="width:60%";>
+
+  <button class="left" onclick="plusDivs(-1)">&#10094;</button>
+  <button class="right" onclick="plusDivs(1)">&#10095;</button>
+</div>
+
+<script>
+  var slideIndex = 1; // index of pictures variable
+  showDivs(slideIndex);
+
+  function plusDivs(n) { // when click the arrow, it goes to next or previous image
+    showDivs(slideIndex += n);
+  }
+
+  function showDivs(n) { // displays the images
+    var picture = document.getElementsByClassName("musicSlides");
+    if (n > picture.length){ // picture = number of images 
+        slideIndex = 1
+      } 
+    if (n < 1) {
+        slideIndex = picture.length
+      }
+    for (var i = 0; i < picture.length; i++) {
+      picture[i].style.display = "none";  
+    }
+    picture[slideIndex-1].style.display = "block";  
+  }
+</script>
+
+{% endblock %}
+
