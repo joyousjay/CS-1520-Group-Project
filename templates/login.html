@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  
+{% endblock %}
+
+{% block content %}
+        <div class="login-area">
+            <img src="../static/logo.png">
+            <h1>Sign In</h1>
+            
+            <div class="input-area">
+                <p>{{error}}</p>
+                <form method="post" action="/login">
+                    <input type="text" id="username" name="username" placeholder="Username">
+                    <br>
+                    <input type="password" id="password" name="password" placeholder="Password">
+                    <br>
+                    <input type="submit" class="btn btn-primary" value="Submit" onclick="xssCheckLogin()"> 
+
+                    <script>                        
+                        function xssCheckLogin(){
+                            // Reference: https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html
+                            var loginElements = ["username", "password"];
+                            for(var e = 0; e < loginElements.length; e++){
+                            var element = document.getElementById(loginElements[e]).value;
+                            var checkChars = ["&", "<", ">", '"', "'"];
+                            var newChars = ["&amp", "&lt", "&gt", "&quot", "&#x27"];
+                            for(var i=0; i<checkChars.length; i++) {
+                                element = element.replace(checkChars[i], newChars[i]);
+                                console.log(element);
+                            }
+                            console.log(element);
+                            document.getElementById(loginElements[e]).value = element;
+                            }
+                        }
+                    </script>
+                </form>            
+            </div>
+
+            <a href="/signup" class="signup-link">Don't have an account? Sign up here!</a>
+        </div>
+
+{% endblock %}
