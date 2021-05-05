@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<script src="static/script.js"></script>
+  
+{% endblock %}
+
+{% block content %}
+        <div class="login-area">
+            
+            <img src="../static/logo.png">
+            <h1>Sign Up</h1>
+
+            <div class="input-area">
+                <form method="post" action="/signup">
+                    <input type="text" id="username" name="username" placeholder="Username"required>
+                    <br>
+                    <input type="text" id="email" name="email" placeholder="Email Address"required>
+                    <br>
+                    <input type="password" id = "password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Password"required>
+                    <div id="message">
+                        <h6>Password must include the following:</h3>
+                        <p id="lowercase" class="invalid" ><img id= "lowercaseimg" src="../static/redx2.png" alt="red x in circle" style="width: 10px; height: 10px;">  A <b>lowercase</b> letter</p>
+                        <p id="capital" class="invalid" ><img id= "capitalimg" src="../static/redx2.png" alt="red x in circle" style="width: 10px; height: 10px;"> A <b>capital </b> letter</p>
+                        <p id="number" class="invalid" ><img id= "numberimg" src="../static/redx2.png" alt="red x in circle" style="width: 10px; height: 10px;"> A <b>number</b></p>
+                        <p id="length" class="invalid" ><img id= "lengthimg" src="../static/redx2.png" alt="red x in circle" style="width: 10px; height: 10px;"> At least <b>8 characters</b></p>
+                    </div>
+                    
+                    <!--
+                        <input type="file" id="profileUpload" name="profile">
+                    ---> 
+                
+                    <input type="submit" id="submitData" class="btn btn-primary" value="Submit" onclick="xssCheckSignup()"> 
+
+                    <script>
+                        function xssCheckSignup(){
+                            var loginElements = ["username", "email","password"];
+                            for(var e = 0; e < loginElements.length; e++) {
+                                var element = document.getElementById(loginElements[e]).value;
+                                var checkChars = ["&", "<", ">", '"', "'"];
+                                var newChars = ["&amp", "&lt", "&gt", "&quot", "&#x27"];
+                                for(var i=0; i<checkChars.length; i++) {
+                                    element = element.replace(checkChars[i], newChars[i]);
+                                }
+                                document.getElementById(loginElements[e]).value = element;
+                            }
+
+                            // Problem with the file uploader: JS would not change the name of the file 
+                            // and this prevents multiple users to upload files. 
+
+                            // Call the GCP handler to upload the file
+                            //const formStuff= getFormFields();
+
+                            // Generate a signed URL for the user to be able to upload a file
+                            //initiateURL(formStuff);
+                        }
+
+                        function getFile() {
+                            // this can be a file from e.g. <input type="file"/>
+                            document.getElementById('profileUpload').files[0].name = 'TestImage.png'; 
+                            const file = document.getElementById('profileUpload').files[0].name;
+                            return document.getElementById("profileUpload").files[0];
+                        }
+
+                        function getFormFields() {
+                            // The name of the file will be the username
+                            document.getElementById("profileUpload").files[0].name = "Fairence.png"; 
+                            const file = document.getElementById("profileUpload").files[0];
+                            return JSON.stringify({"filename": file.name, "contentType": file.type});
+                        }
+          
+                        function initiateURL(formdata) {
+                            const xhr = new XMLHttpRequest();
+                            xhr.responseType = "json";
+                            xhr.open("PUT", "/get_signed_url", true); // This path will return the filename and the file type to upload.
+                            
+                            xhr.onload = () => {
+                                const status = xhr.status; 
+                                if (status === 200) {
+                                    const jsonResponse = xhr.response;
+                                    var signedUrl = jsonResponse["signedUrl"];
+                                    console.log(signedUrl);
+                                    uploadFile(signedUrl);
+                                } 
+                                else {
+                                    alert("Problem getting the signed URL. Cannot upload the file");
+                                }
+                            };
+                            xhr.onerror = () => {
+                                alert("Something went wrong. Cannot upload the file");
+                            };
+                            
+                            xhr.setRequestHeader("Content-Type", "application/json");
+
+                            xhr.send(formdata);
+                        }
+
+                        // Run this command: gsutil cors set cors-json-file gs://<bucket_name>...
+                        // Taken from: https://medium.com/imersotechblog/upload-files-to-google-cloud-storage-gcs-from-the-browser-159810bb11e3
+                        
+                        function uploadFile(signedUrl) {                   
+                            const file = getFile();
+                            const xhr = new XMLHttpRequest();
+                            xhr.open("PUT", signedUrl, true);
+                            xhr.onload = () => {
+                                
+                                const status = xhr.status;
+                                if (status === 200) {
+                                    alert("File was uploaded properly");
+                                } else {
+                                    alert("Something went wrong! Could not upload the image");
+                                }
+                            };
+
+                            xhr.onerror = () => {
+                                alert("Something went wrong. Could not upload the image");
+                            };
+
+                            xhr.setRequestHeader('Content-Type', file.type);
+                            xhr.send(file);
+                        }
+                    </script>                    
+                </form>
+            </div>
+
+            <a href="/login" class="signup-link">Already have an account? Sign in here!</a>
+        </div>
+{% endblock %}
+
