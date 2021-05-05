@@ -1,0 +1,44 @@
+body {
+    margin-left: 20%; 
+    margin-right: 20%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-align: center;
+    font-family: 'Telex', sans-serif;
+}
+
+.login-area {
+    margin-top: 50px;
+}
+
+.login-area img {
+    height: 125px;
+    width: 125px;
+}
+
+.login-area h1 {
+    font-size: 35px;
+}
+
+.input-area {
+    background-color: seashell;
+    box-sizing: border-box;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.input-area input{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    align-content: center;
+    text-align: center;
+    width: 60%;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    
+}
+
+.input-area input[type=submit] {
+    background-color: lightgreen;
+    margin-top: 30px;
+}
