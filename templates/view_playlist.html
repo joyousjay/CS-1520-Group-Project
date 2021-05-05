@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block header %} 
+  <h1>{% block title %}{{ playlist["name"] }}{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <table> 
+        <th></th>
+        <th>Track</th>
+        <th>Artist</th>  
+        <th>Link</th>
+        {% for track in playlist["playlist"] %}
+            <tr>
+                <td> <img src={{track.img}} alt="Album art" width="50" height="50"></td>
+                <td>{{track.track}}</td>
+                <td>{{track.artists|join(', ')}}</td>
+                <td><a href={{track.link}} target="_blank" rel="noopener noreferrer">{{track.link}}</a></td>
+            </tr>       
+        {% endfor %}
+    </table>
+{% endblock %}
