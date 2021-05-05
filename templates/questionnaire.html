@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %} Music Questionnaire {% endblock %}</h1>
+  <p> Take this questionnaire to create your very own playlist!</p>
+{% endblock %}
+
+{% block content %}
+    <form action='/quizoutput' method='POST'>
+        <h2>Answer the following questions:</h2>
+        {% for i in questions %}
+            <p>{{ i }}</p>
+            {% for j in questions[i] %}
+                <input type="radio" id="{{j}}" name="{{i}}" value="{{j}}" required>
+                <label for="{{j}}">{{j}}</label>
+                <br>
+            {% endfor %}
+            <br>      
+        {% endfor %}
+        <input type="submit" value="Submit" />
+    </form>
+{% endblock %}
