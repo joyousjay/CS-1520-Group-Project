@@ -1,5 +1,5 @@
 # Music Selector App
-#### Project for CS1520, Group 3: Erin O'Rouke, John Ference, Samantha Whelpley, Janet Majekodunmi
+#### Project for CS1520, Group 3: Erin O'Rourke, John Ference, Samantha Whelpley, Janet Majekodunmi
 
 To properly use this project, you must initialize the following:
 - SPOTIPY_CLIENT_ID (from the Spotify Developer dashboard)
